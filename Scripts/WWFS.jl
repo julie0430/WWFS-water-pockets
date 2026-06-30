@@ -3,13 +3,17 @@ using ImageMorphology
 using Statistics
 
 const WWFS = WhereTheWaterFlows.Subglacially
+const GLACIER = "BonnePierre"
+const METHODE_SURF = "2024"
+const METHODE_BED = "Farinotti"
+const RESOLUTION = "25m"
 
 ### Chemins ###
 
-surface_path = "T:/RTM/06_ROGP/01_SUIVI_PAPROG/02-ACTIONS_EN_COURS_ONF/2026/4_stage-poches-eau/06_notes/WWFS/Input/Surf_TreLaTete_2023_25m.tif"
-bed_path = "T:/RTM/06_ROGP/01_SUIVI_PAPROG/02-ACTIONS_EN_COURS_ONF/2026/4_stage-poches-eau/06_notes/WWFS/Input/Bed_TreLaTete_Farinotti_25m.tif"
-outline_path = "I:/doss/x8891/01_projets_agence/paprog/99_Production/JMeugnier/Outlines_TreLaTete.gpkg"
-depression_path = "I:/doss/x8891/01_projets_agence/paprog/99_Production/JMeugnier/Depressions_TreLaTete_2025.gpkg"
+surface_path = "T:/RTM/06_ROGP/01_SUIVI_PAPROG/02-ACTIONS_EN_COURS_ONF/2026/4_stage-poches-eau/06_notes/WWFS/Input/Surf_$(GLACIER)_$(METHODE_SURF)_$(RESOLUTION).tif"
+bed_path = "T:/RTM/06_ROGP/01_SUIVI_PAPROG/02-ACTIONS_EN_COURS_ONF/2026/4_stage-poches-eau/06_notes/WWFS/Input/Bed_$(GLACIER)_$(METHODE_BED)_$(RESOLUTION).tif"
+outline_path = "I:/doss/x8891/01_projets_agence/paprog/99_Production/JMeugnier/Outlines_$(GLACIER).gpkg"
+depression_path = "I:/doss/x8891/01_projets_agence/paprog/99_Production/JMeugnier/Depressions_$(GLACIER)_2025.gpkg"
 outdir = "T:/RTM/06_ROGP/01_SUIVI_PAPROG/02-ACTIONS_EN_COURS_ONF/2026/4_stage-poches-eau/06_notes/WWFS/Output"
 
 ### Lecture des rasters ###
@@ -156,9 +160,9 @@ function write_tif(path, data, ref_raster)
     println("Écrit : ", path)
 end
 
-write_tif(joinpath(outdir, "WWFS_head_hydraulicv2.tif"),Float32.(head),surface_r)
-write_tif(joinpath(outdir, "WWFS_hwater_pockets.tif"),Float32.(hwater_all),surface_r)
-write_tif(joinpath(outdir, "WWFS_flow_accumulation.tif"),Float32.(flow),surface_r)
+write_tif(joinpath(outdir, "WWFS_hydraulic_head_$(GLACIER)_$(METHODE_BED).tif"),Float32.(head),surface_r)
+write_tif(joinpath(outdir, "WWFS_hwater_pockets_$(GLACIER)_$(METHODE_BED).tif"),Float32.(hwater_all),surface_r)
+write_tif(joinpath(outdir, "WWFS_flow_accumulation_$(GLACIER)_$(METHODE_BED).tif"),Float32.(flow),surface_r)
 
 ### Figure ###
 
@@ -226,4 +230,5 @@ Legend(fig[1, 3],[leg_glacier, leg_depression, leg_channel, leg_big_pocket, leg_
 Colorbar(fig[1, 2], hm, label = "Hauteur de poche d'eau (m)")
 
 DataAspect()
+save(joinpath(outdir, "WWFS_$(GLACIER)_$(METHODE_BED).png"), fig)
 display(fig)
