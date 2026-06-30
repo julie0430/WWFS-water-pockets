@@ -6,10 +6,10 @@ const WWFS = WhereTheWaterFlows.Subglacially
 
 ### Chemins ###
 
-surface_path = "T:/RTM/06_ROGP/01_SUIVI_PAPROG/02-ACTIONS_EN_COURS_ONF/2026/4_stage-poches-eau/06_notes/WWFS/Input/Surf_MdG_2025_25m.tif"
-bed_path = "T:/RTM/06_ROGP/01_SUIVI_PAPROG/02-ACTIONS_EN_COURS_ONF/2026/4_stage-poches-eau/06_notes/WWFS/Input/Bed_MdG_Gilbert_25m.tif"
-outline_path = "I:/doss/x8891/01_projets_agence/paprog/99_Production/JMeugnier/Outlines_MdG.gpkg"
-depression_path = "I:/doss/x8891/01_projets_agence/paprog/99_Production/JMeugnier/Depressions_MdG_2025.gpkg"
+surface_path = "T:/RTM/06_ROGP/01_SUIVI_PAPROG/02-ACTIONS_EN_COURS_ONF/2026/4_stage-poches-eau/06_notes/WWFS/Input/Surf_TreLaTete_2023_25m.tif"
+bed_path = "T:/RTM/06_ROGP/01_SUIVI_PAPROG/02-ACTIONS_EN_COURS_ONF/2026/4_stage-poches-eau/06_notes/WWFS/Input/Bed_TreLaTete_Farinotti_25m.tif"
+outline_path = "I:/doss/x8891/01_projets_agence/paprog/99_Production/JMeugnier/Outlines_TreLaTete.gpkg"
+depression_path = "I:/doss/x8891/01_projets_agence/paprog/99_Production/JMeugnier/Depressions_TreLaTete_2025.gpkg"
 outdir = "T:/RTM/06_ROGP/01_SUIVI_PAPROG/02-ACTIONS_EN_COURS_ONF/2026/4_stage-poches-eau/06_notes/WWFS/Output"
 
 ### Lecture des rasters ###
@@ -213,15 +213,16 @@ contour!(ax, x, y, Float64.(bigmask); levels=[0.5], color=:red, linewidth=2, ove
 contour!(ax,x,y,Float64.(smallmask);levels = [0.5],color = :purple,linewidth = 1.5,overdraw = true)
 heatmap!(ax,x,y,Float64.(mainflow_skeleton);colormap = [:transparent, :blue],colorrange = (0, 1),interpolate = false,nan_color = RGBAf(0, 0, 0, 0),overdraw = true)
 
-# ── Éléments pour la légende ────────────────────────────────────────────────
+### Légende ###
 
 leg_glacier = LineElement(color=:skyblue, linewidth=2)
 leg_depression = LineElement(color=:green, linewidth=1.5)
 leg_channel = LineElement(color=:blue, linewidth=2)
-leg_pocket = LineElement(color=:red, linewidth=3)
+leg_big_pocket = LineElement(color=:red, linewidth=3)
+leg_small_pocket = LineElement(color=:purple, linewidth=3)
 leg_head = LineElement(color=:grey, linewidth=1.2)
 
-Legend(fig[1, 3],[leg_glacier, leg_depression, leg_channel, leg_pocket, leg_head],["Contours du glacier", "Dépressions de surface", "Chenaux principaux", "Poches d'eau > 1000 m³", "Potentiel hydraulique"],orientation = :vertical,framevisible = true)
+Legend(fig[1, 3],[leg_glacier, leg_depression, leg_channel, leg_big_pocket, leg_small_pocket, leg_head],["Contours du glacier", "Dépressions de surface", "Chenaux principaux", "Poches d'eau > 1000 m³", "Poches d'eau < 1000 m³", "Potentiel hydraulique"],orientation = :vertical,framevisible = true)
 Colorbar(fig[1, 2], hm, label = "Hauteur de poche d'eau (m)")
 
 DataAspect()
